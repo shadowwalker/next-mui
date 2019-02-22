@@ -117,7 +117,7 @@ type IProps = {
 } & WithStyles<typeof styles>
 
 export default withStyles(styles)(({ classes }: IProps) => (
-	<Button className={classes.root}>Higher-order component</Button>
+    <Button className={classes.root}>Higher-order component</Button>
 ))
 ```
 
@@ -129,6 +129,11 @@ export default withStyles(styles)(({ classes }: IProps) => (
 declare type WithMui = (Component: React.ComponentType) => React.ComponentType;
 declare const withMui: (themeOptions?: ThemeOptions) => WithMui
 ```
+
+Optional properties:
+
+- themeOptions: object
+  - Object structure and default theme could be found [here](https://material-ui.com/customization/default-theme/)
 
 **MuiHead**
 
