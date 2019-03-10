@@ -83,32 +83,20 @@ type WithMui = (Component: React.ComponentType) => React.ComponentType
 
 const withMui = (themeOptions?: ThemeOptions): WithMui => {
   muiContext = getMuiContext(themeOptions)
-
   return (Component: React.ComponentType): React.ComponentType => {
-    class MuiComponent extends React.Component {
-      componentDidMount() {
-        /*
-        const jssStyles = document.querySelector('#jss-server-side')
-        if (jssStyles && jssStyles.parentNode) {
-          jssStyles.parentNode.removeChild(jssStyles)
-        }
-        */
-      }
-
-      render() {
-        return (
-          <StylesProvider
-            generateClassName={muiContext.generateClassName}
-            sheetsRegistry={muiContext.sheetsRegistry}
-            sheetsManager={muiContext.sheetsManager}
-          >
-            <ThemeProvider theme={muiContext.theme}>
-              <CssBaseline />
-              <Component {...this.props} />
-            </ThemeProvider>
-          </StylesProvider>
-        )
-      }
+    const MuiComponent = () => {
+      return (
+        <StylesProvider
+          generateClassName={muiContext.generateClassName}
+          sheetsRegistry={muiContext.sheetsRegistry}
+          sheetsManager={muiContext.sheetsManager}
+        >
+          <ThemeProvider theme={muiContext.theme}>
+            <CssBaseline />
+            <Component {...this.props} />
+          </ThemeProvider>
+        </StylesProvider>
+      )
     }
 
     // display name
