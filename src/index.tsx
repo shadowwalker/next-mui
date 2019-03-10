@@ -1,5 +1,5 @@
 import './bootstrap'
-import React, { useLayoutEffect, useState } from 'react'
+import React from 'react'
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import createMuiTheme, { ThemeOptions, Theme } from '@material-ui/core/styles/createMuiTheme'
@@ -89,12 +89,9 @@ const withMui = (themeOptions?: ThemeOptions): WithMui => {
       componentDidMount() {
         /*
         const jssStyles = document.querySelector('#jss-server-side')
-        console.log(jssStyles)
-        console.log('Removing style jss-server-side')
         if (jssStyles && jssStyles.parentNode) {
           jssStyles.parentNode.removeChild(jssStyles)
         }
-        console.log('Removed')
         */
       }
 
@@ -125,38 +122,8 @@ const withMui = (themeOptions?: ThemeOptions): WithMui => {
   }
 }
 
-interface MuiProviderProps {
-  theme?: ThemeOptions
-  children: React.ReactNode
-}
-
-const MuiProvider = ({theme, children}: MuiProviderProps) => {
-  muiContext = getMuiContext(theme)
-
-  useLayoutEffect(() => {
-    const jssStyles = document.querySelector('#jss-server-side')
-    if (jssStyles && jssStyles.parentNode) {
-      jssStyles.parentNode.removeChild(jssStyles)
-    }
-  })
-
-  return (
-    <StylesProvider
-      generateClassName={muiContext.generateClassName}
-      sheetsRegistry={muiContext.sheetsRegistry}
-      sheetsManager={muiContext.sheetsManager}
-    >
-      <ThemeProvider theme={muiContext.theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </StylesProvider>
-  )
-}
-
 export {
   withMui,
   MuiHead,
-  MuiStyles,
-  MuiProvider
+  MuiStyles
 }
