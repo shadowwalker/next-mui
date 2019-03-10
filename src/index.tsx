@@ -73,7 +73,7 @@ const MuiStyles = () => (
     { muiContext ?
       <style id='jss-server-side' dangerouslySetInnerHTML={{ __html: muiContext.sheetsRegistry.toString() }}/>
       :
-      null
+      <style id='jss-server-side'>{'<!-- ERROR: MUI context is undefined -->'}</style>
     }
     {flush() || null}
   </>
@@ -88,9 +88,12 @@ const withMui = (themeOptions?: ThemeOptions): WithMui => {
     class MuiComponent extends React.Component {
       componentDidMount() {
         const jssStyles = document.querySelector('#jss-server-side')
+        console.log(jssStyles)
+        console.log('Removing style jss-server-side')
         if (jssStyles && jssStyles.parentNode) {
           jssStyles.parentNode.removeChild(jssStyles)
         }
+        console.log('Removed')
       }
 
       render() {
