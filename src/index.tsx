@@ -87,6 +87,7 @@ const withMui = (themeOptions?: ThemeOptions): WithMui => {
   return (Component: React.ComponentType): React.ComponentType => {
     class MuiComponent extends React.Component {
       componentDidMount() {
+        /*
         const jssStyles = document.querySelector('#jss-server-side')
         console.log(jssStyles)
         console.log('Removing style jss-server-side')
@@ -94,6 +95,7 @@ const withMui = (themeOptions?: ThemeOptions): WithMui => {
           jssStyles.parentNode.removeChild(jssStyles)
         }
         console.log('Removed')
+        */
       }
 
       render() {
