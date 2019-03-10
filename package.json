@@ -1,6 +1,6 @@
 {
   "name": "next-mui",
-  "version": "1.0.5-alpha.1",
+  "version": "1.0.5-alpha.2",
   "description": "Material-UI for Next.js",
   "main": "index.js",
   "types": "index.d.ts",
