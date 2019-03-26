@@ -83,6 +83,7 @@ type WithMui = (Component: React.ComponentType) => React.ComponentType
 
 const withMui = (themeOptions?: ThemeOptions): WithMui => {
   muiContext = getMuiContext(themeOptions)
+
   return (Component: React.ComponentType): React.ComponentType => {
     const MuiComponent = () => {
       return (
@@ -110,8 +111,29 @@ const withMui = (themeOptions?: ThemeOptions): WithMui => {
   }
 }
 
+const MuiProvider = ({themeOptions, children}: {
+  themeOptions?: ThemeOptions,
+  children: React.ReactNode
+}) => {
+  muiContext = getMuiContext(themeOptions)
+
+  return (
+    <StylesProvider
+      generateClassName={muiContext.generateClassName}
+      sheetsRegistry={muiContext.sheetsRegistry}
+      sheetsManager={muiContext.sheetsManager}
+    >
+      <ThemeProvider theme={muiContext.theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </StylesProvider>
+  )
+}
+
 export {
   withMui,
   MuiHead,
-  MuiStyles
+  MuiStyles,
+  MuiProvider
 }
