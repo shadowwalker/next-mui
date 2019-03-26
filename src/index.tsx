@@ -1,4 +1,3 @@
-import './bootstrap'
 import React from 'react'
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import CssBaseline from '@material-ui/core/CssBaseline'
