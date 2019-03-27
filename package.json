@@ -19,7 +19,6 @@
     "typescript": "^3.3.4000"
   },
   "dependencies": {
-    "hoist-non-react-statics": "^3.3.0",
     "jss": "^9.8.7",
     "styled-jsx": "^3.2.1"
   }

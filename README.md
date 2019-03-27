@@ -12,6 +12,8 @@ This plugin implement the method in these examples:
 
 ### Add Dependencies
 
+In your `Next.js` app, run
+
 ``` bash
 yarn add next-mui @material-ui/core @material-ui/styles
 ```
@@ -23,10 +25,12 @@ yarn add next-mui @material-ui/core @material-ui/styles
 *pages/_app.tsx*
 
 ``` typescript
-import { withMui } from 'next-mui'
+import React from 'react'
+import MUI from 'next-mui'
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import App from 'next/app'
 
+// Customized theme is optional
 const theme: ThemeOptions = {
   typography: {
     useNextVariants: true,
@@ -47,12 +51,29 @@ const theme: ThemeOptions = {
   }
 }
 
-export default withMui(theme)(App)
+export default class extends App {
+  static async getInitialProps({ Component, ctx }) {
+    let pageProps = {}
 
-// theme parameter in withMui() is optional, 
-// simply skip it to use default material-ui theme
-//
-// export default withMui()(App)
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx)
+    }
+
+    return { pageProps }
+  }
+
+  render() {
+    const { Component, pageProps } = this.props
+
+    return (
+      <Container>
+      	<MUI theme={theme}>
+        	<Component {...pageProps} />
+				</MUI>
+      </Container>
+    )
+  }
+}
 ```
 
 *pages/_document.tsx*
@@ -60,7 +81,7 @@ export default withMui(theme)(App)
 ``` typescript
 import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
-import { MuiHead, MuiStyles } from 'next-mui'
+import { MuiStyles } from 'next-mui'
 
 export default class extends Document {
   static async getInitialProps(ctx) {
@@ -76,7 +97,10 @@ export default class extends Document {
     return (
       <html lang='en' dir='ltr'>
         <Head>
-          <MuiHead disableUserScalable/>
+          <meta name='viewport' key='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no' />
+          <meta name='theme-color' key='theme-color' content='#FFFFFF' />
+          <link rel='preload' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' as='style' />
+      		{/* <link rel='preload' href='https://fonts.googleapis.com/icon?family=Material+Icons' as='style' /> */}
         </Head>
         <body>
           <Main />
@@ -90,11 +114,9 @@ export default class extends Document {
 
 ### Create Material-UI Styled Component / Page
 
-If you are using Material-UI V4 (alpha) styling solution, temporarily you have to import `next-mui/bootstrap` before everything else. [More information](https://material-ui.com/css-in-js/basics/).
+~~If you are using Material-UI V4 (alpha) styling solution, temporarily you have to import `next-mui/bootstrap` before everything else. [More information](https://material-ui.com/css-in-js/basics/).~~
 
 ``` typescript
-import 'next-mui/bootstrap'
-// --- Post bootstrap ---
 import React from 'react'
 import { withStyles } from '@material-ui/styles'
 import Button from '@material-ui/core/Button'
@@ -122,26 +144,12 @@ export default withStyles(styles)(({ classes }: IProps) => (
 
 ## API
 
-**withMui** higher order component
-
-``` typescript
-declare type WithMui = (Component: React.ComponentType) => React.ComponentType;
-declare const withMui: (themeOptions?: ThemeOptions) => WithMui
-```
+**MUI**
 
 Optional properties:
 
-- themeOptions: object
+- theme: object
   - Object structure and default theme could be found [here](https://material-ui.com/customization/default-theme/)
-
-**MuiHead**
-
-Optional properties:
-
-- fontIcons: boolean
-  - Use font icons
-- disableUserScalable: boolean
-  - Disable user's ability to zoom in and out on the app
 
 **MuiStyles**
 

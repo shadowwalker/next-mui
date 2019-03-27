@@ -1,5 +1,4 @@
 import React from 'react'
-import hoistNonReactStatic from 'hoist-non-react-statics'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import createMuiTheme, { ThemeOptions, Theme } from '@material-ui/core/styles/createMuiTheme'
 import { StylesProvider, ThemeProvider, createGenerateClassName } from '@material-ui/styles'
@@ -18,7 +17,7 @@ interface IMuiContext {
   theme: Theme
   sheetsManager: SheetManager
   sheetsRegistry: SheetsRegistry
-  generateClassName: any // TODO: type incompatible
+  generateClassName: any
 }
 
 const createMuiContext = (themeOptions?: ThemeOptions): IMuiContext => {
@@ -47,26 +46,6 @@ const getMuiContext = (themeOptions?: ThemeOptions): IMuiContext => {
   }
 }
 
-const MuiHead = ({ fontIcons, disableUserScalable }: {
-  fontIcons?: boolean
-  disableUserScalable?: boolean
-}) => {
-  if (!muiContext) {
-    return null
-  } else {
-    return (
-      <>
-        {/* tslint:disable:max-line-length */}
-        <meta name='viewport' content={'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no' + (disableUserScalable ? ', user-scalable=no' : '')} key='viewport' />
-        {/* tslint:enable:max-line-length */}
-        <meta name='theme-color' content={muiContext.theme.palette.primary.main} key='theme-color' />
-        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' />
-        {fontIcons ? <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' /> : null}
-      </>
-    )
-  }
-}
-
 const MuiStyles = () => (
   <>
     { muiContext ?
@@ -78,44 +57,11 @@ const MuiStyles = () => (
   </>
 )
 
-type WithMui = (Component: React.ComponentType) => React.ComponentType
-
-const withMui = (themeOptions?: ThemeOptions): WithMui => {
-  muiContext = getMuiContext(themeOptions)
-
-  return (Component: React.ComponentType): React.ComponentType => {
-    const MuiComponent = () => {
-      return (
-        <StylesProvider
-          generateClassName={muiContext.generateClassName}
-          sheetsRegistry={muiContext.sheetsRegistry}
-          sheetsManager={muiContext.sheetsManager}
-        >
-          <ThemeProvider theme={muiContext.theme}>
-            <CssBaseline />
-            <Component {...this.props} />
-          </ThemeProvider>
-        </StylesProvider>
-      )
-    }
-
-    // display name
-    (MuiComponent as React.ComponentType).displayName =
-      `MUI(${Component.displayName || Component.name || 'Component'})`
-
-    // Copy statics
-    hoistNonReactStatic(MuiComponent, Component)
-
-    return MuiComponent
-  }
-}
-
-const MuiProvider = ({themeOptions, children}: {
-  themeOptions?: ThemeOptions,
+const MUI = ({theme, children}: {
+  theme?: ThemeOptions,
   children: React.ReactNode
 }) => {
-  muiContext = getMuiContext(themeOptions)
-
+  muiContext = getMuiContext(theme)
   return (
     <StylesProvider
       generateClassName={muiContext.generateClassName}
@@ -131,8 +77,6 @@ const MuiProvider = ({themeOptions, children}: {
 }
 
 export {
-  withMui,
-  MuiHead,
-  MuiStyles,
-  MuiProvider
+  MUI as default,
+  MuiStyles
 }
