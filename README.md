@@ -68,8 +68,8 @@ export default class extends App {
     return (
       <Container>
       	<MUI theme={theme}>
-        	<Component {...pageProps} />
-				</MUI>
+	  <Component {...pageProps} />
+        </MUI>
       </Container>
     )
   }
@@ -100,7 +100,7 @@ export default class extends Document {
           <meta name='viewport' key='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no' />
           <meta name='theme-color' key='theme-color' content='#FFFFFF' />
           <link rel='preload' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' as='style' />
-      		{/* <link rel='preload' href='https://fonts.googleapis.com/icon?family=Material+Icons' as='style' /> */}
+      	  {/* <link rel='preload' href='https://fonts.googleapis.com/icon?family=Material+Icons' as='style' /> */}
         </Head>
         <body>
           <Main />
