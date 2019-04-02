@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import createMuiTheme, { ThemeOptions, Theme } from '@material-ui/core/styles/createMuiTheme'
 import { StylesProvider, ThemeProvider, createGenerateClassName } from '@material-ui/styles'
@@ -51,7 +51,7 @@ const MuiStyles = () => (
     { muiContext ?
       <style id='jss-server-side' dangerouslySetInnerHTML={{ __html: muiContext.sheetsRegistry.toString() }}/>
       :
-      <style id='jss-server-side'>{'<!-- ERROR: MUI context is undefined -->'}</style>
+      <style id='jss-server-side'>/* ERROR: MUI context is undefined */</style>
     }
     {flush() || null}
   </>
@@ -61,6 +61,13 @@ const MUI = ({theme, children}: {
   theme?: ThemeOptions,
   children: React.ReactNode
 }) => {
+  useEffect(() => {
+    const jssStyles = document.querySelector('#jss-server-side')
+    if (jssStyles) {
+      jssStyles.parentNode.removeChild(jssStyles)
+    }
+  }, [])
+
   muiContext = getMuiContext(theme)
   return (
     <StylesProvider
