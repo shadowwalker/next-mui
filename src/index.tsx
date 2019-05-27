@@ -20,28 +20,28 @@ interface IMuiContext {
   generateClassName: any
 }
 
-const createMuiContext = (themeOptions?: ThemeOptions): IMuiContext => {
+const createMuiContext = (theme?: Theme | ThemeOptions): IMuiContext => {
   return {
     generateClassName: createGenerateClassName(),
     sheetsManager: new Map(),
     sheetsRegistry: new SheetsRegistry(),
-    theme: createMuiTheme(themeOptions)
+    theme: 'mixins' in theme && typeof theme.mixins.gutters === 'function' ? theme as Theme : createMuiTheme(theme)  // check if theme is already a Theme object
   }
 }
 
 let muiContext: IMuiContext
 
-const getMuiContext = (themeOptions?: ThemeOptions): IMuiContext => {
+const getMuiContext = (theme?: Theme | ThemeOptions): IMuiContext => {
   // Make sure to create a new context for every server-side request so that data
   // isn't shared between connections (which would be bad).
   const isBrowser = typeof window !== 'undefined'
   if (isBrowser) {
     if (!muiContext) {
-      muiContext = createMuiContext(themeOptions)
+      muiContext = createMuiContext(theme)
     }
     return muiContext
   } else {
-    muiContext = createMuiContext(themeOptions)
+    muiContext = createMuiContext(theme)
     return muiContext
   }
 }
@@ -58,7 +58,7 @@ const MuiStyles = () => (
 )
 
 const MUI = ({theme, children}: {
-  theme?: ThemeOptions,
+  theme?: Theme | ThemeOptions,
   children: React.ReactNode
 }) => {
   useEffect(() => {
